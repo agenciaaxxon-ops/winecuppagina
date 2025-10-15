@@ -1,10 +1,9 @@
-import React from "react";
-import QRCodeReveal from './pages/QRCodeReveal';
+import WhatsappReveal from './pages/WhatsappReveal';
 
 function App() {
     return (
         <main>
-            <QRCodeReveal />
+            <WhatsappReveal />
         </main>
     );
 }
