@@ -33,7 +33,7 @@ const WhatsappReveal = () => {
         return () => videoElement.removeEventListener('ended', handleVideoEnd);
     }, [isVideoFinished]);
 
-    // Lógica da barra de progresso PRECISA e adaptável
+    // Lógica da barra de progresso
     useEffect(() => {
         const videoElement = videoRef.current;
         if (!videoElement) return;
@@ -43,9 +43,7 @@ const WhatsappReveal = () => {
                 const currentTime = videoElement.currentTime;
                 const duration = videoElement.duration;
 
-                // Usa o cálculo linear para garantir precisão
                 const linearProgress = (currentTime / duration) * 100;
-
                 setProgress(linearProgress);
             }
         };
@@ -84,43 +82,47 @@ const WhatsappReveal = () => {
                     Uma Mensagem Especial para Você
                 </h1>
 
-                <div className="w-full max-w-md md:max-w-lg glass rounded-3xl p-2 animate-fade-in-up animation-delay-300 mt-20 md:mt-0">
-                    <div className="relative">
-                        <video
-                            ref={videoRef}
-                            src={contentVideo}
-                            className="w-full h-auto rounded-2xl object-cover aspect-[12/12]"
-                            autoPlay
-                            muted={isMuted}
-                            playsInline
-                        />
+                {/* --- CONTÊINER INVISÍVEL PARA ESTABILIZAR O LAYOUT --- */}
+                <div className="flex flex-col items-center mt-20 md:mt-0">
+                    <div className="w-full max-w-md md:max-w-lg glass rounded-3xl p-2 animate-fade-in-up animation-delay-300">
+                        <div className="relative">
+                            <video
+                                ref={videoRef}
+                                src={contentVideo}
+                                className="w-full h-auto rounded-2xl object-cover aspect-[4/3]"
+                                autoPlay
+                                muted={isMuted}
+                                playsInline
+                            />
 
-                        <div className="absolute bottom-3 right-3 z-20">
-                            <Button size="icon" onClick={toggleMute} className="glass rounded-full text-cream w-10 h-10">
-                                {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-                            </Button>
-                        </div>
+                            <div className="absolute bottom-3 right-3 z-20">
+                                <Button size="icon" onClick={toggleMute} className="glass rounded-full text-cream w-10 h-10">
+                                    {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                                </Button>
+                            </div>
 
-                        <div className="absolute bottom-2 left-0 w-full px-2">
-                            <div className="bg-white/20 w-full h-1.5 rounded-full overflow-hidden">
-                                <div className="bg-cream h-full rounded-full" style={{ width: `${progress}%` }} />
+                            <div className="absolute bottom-2 left-0 w-full px-2">
+                                <div className="bg-white/20 w-full h-1.5 rounded-full overflow-hidden">
+                                    <div className="bg-cream h-full rounded-full" style={{ width: `${progress}%` }} />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                {isVideoFinished && (
-                    <div className="mt-8 animate-fade-in-up">
-                        <Button
-                            size="lg"
-                            onClick={handleRedirect}
-                            className="bg-cream text-burgundy hover:bg-cream/90 rounded-full text-lg px-8 py-6 flex items-center gap-2 shadow-2xl"
-                        >
-                            <FaWhatsapp className="w-6 h-6" />
-                            <span>Conversar no WhatsApp</span>
-                        </Button>
-                    </div>
-                )}
+                    {/* O botão agora aparece dentro do contêiner estabilizado */}
+                    {isVideoFinished && (
+                        <div className="mt-8 animate-fade-in-up">
+                            <Button
+                                size="lg"
+                                onClick={handleRedirect}
+                                className="bg-cream text-burgundy hover:bg-cream/90 rounded-full text-lg px-8 py-6 flex items-center gap-2 shadow-2xl"
+                            >
+                                <FaWhatsapp className="w-6 h-6" />
+                                <span>Conversar no WhatsApp</span>
+                            </Button>
+                        </div>
+                    )}
+                </div>
             </div>
         </section>
     );
